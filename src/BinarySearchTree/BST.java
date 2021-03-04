@@ -1,7 +1,7 @@
 package BinarySearchTree;
 
 public class BST<E> {
-	Node<E> root;
+	private Node<E> root;
 	
 	public BST() {
 		this.root = null;
@@ -107,6 +107,115 @@ public class BST<E> {
 			return contains(current.getLeft(), obj);
 	}
 	
+	
+	
+	//return the deleted node
+	private Node<E> delete(E obj) {
+		
+		//find the node we want to deleted
+		Node<E> delNode = findNode(this.root, obj);
+		//find the parent of the del node
+		Node<E> parentNode = findParent(this.root, delNode);
+		
+		if(isLeaf(delNode)) {	//Case 1: delNode is a leaf node
+			deleteLeafNode(delNode, parentNode);
+		}else if(hasOnlyLeftChild(delNode)) {	//case 2a: has only left child 
+
+		}else if(hasOnlyRightChild(delNode)) { //case 2b: has only right child
+			
+		}else if(hasTwoChildren(delNode)) { //case 3: has two children
+			
+		}
+		
+		
+		
+		
+		return delNode;
+	}
+
+	//Auxiliary functions for deletion
+	private void deleteLeafNode(Node<E> delNode, Node<E> parent) {
+		//we are deleting a tree with one node in it
+		if(parent == null) {
+			this.root = null;
+		}else if(((Comparable<E>)delNode).compareTo(parent.getData()) > 0) { //delnode is the parents right child
+			parent.setRight(null);
+		}else {
+			parent.setLeft(null); //delNode is the parents left child
+		}
+		
+	}
+	
+	//find a node with E obj as its data in the given tree
+	private Node<E> findNode(Node<E> current, E obj){
+		if(current != null) {
+			if(((Comparable<E>)obj).compareTo(current.getData()) == 0)
+				return current;
+			
+			//go right
+			if(((Comparable<E>) obj).compareTo(current.getData()) > 0)
+				return findNode(current.getRight(), obj);
+			else // obj <= current.data move left
+				return findNode(current.getLeft(), obj);
+			
+		}
+		return null; //node not found
+	}
+	
+	//find the parent node of the given node
+	private Node<E> findParent(Node<E> current, Node<E> child){
+		//child is root node, no parent
+		if(child == this.root)
+			return null;
+		
+		if(current != null) {
+			if(current.getLeft() == child || current.getRight() == child)
+				return current;
+			
+			//go right
+			if(((Comparable<E>) child.getData()).compareTo(current.getData()) > 0)
+				return findParent(current.getRight(), child);
+			else // obj <= current.data move left
+				return findParent(current.getLeft(), child);
+			
+		}
+		return null; //parent node not found
+	}
+	
+	//find the min value from current on down
+	//use this to find the min value for the right subtree when deleting a node with two children
+	private Node<E> minValNode(Node<E> current) {
+		if(current.getLeft() == null)
+			return current;
+		else
+			return minValNode(current.getLeft());
+	}
+	
+	//find the max value from current on down
+	//use this to find the max value for the left subtree when deleting a node with two children
+	private Node<E> maxValNode(Node<E> current){
+		if(current.getRight() == null)
+			return current;
+		else 
+			return maxValNode(current.getRight());
+	}
+	
+	
+	private boolean isLeaf(Node<E> current) {
+		return current.getLeft() == null && current.getRight() == null;
+	}
+	
+	private boolean hasOnlyRightChild(Node<E> current) {
+		return (current.getLeft() == null && current.getRight() != null);
+	}
+	
+	private boolean hasOnlyLeftChild(Node<E> current) {
+		return (current.getLeft() != null && current.getRight() == null);
+	}
+	
+	private boolean hasTwoChildren(Node<E> current) {
+		return current.getLeft() != null && current.getRight() != null;
+	}
 	
 	
 
