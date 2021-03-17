@@ -120,9 +120,10 @@ public class BST<E> {
 		if(isLeaf(delNode)) {	//Case 1: delNode is a leaf node
 			deleteLeafNode(delNode, parentNode);
 		}else if(hasOnlyLeftChild(delNode)) {	//case 2a: has only left child 
-
+			deleteNodeOnlyLeftChild(delNode, parentNode);
 		}else if(hasOnlyRightChild(delNode)) { //case 2b: has only right child
-			
+			deleteNodeOnlyRightChild(delNode, parentNode);
+
 		}else if(hasTwoChildren(delNode)) { //case 3: has two children
 			
 		}
@@ -146,6 +147,42 @@ public class BST<E> {
 		
 	}
 	
+	//del node has only one left child
+	private void deleteNodeOnlyLeftChild(Node<E> delNode, Node<E> parent) {
+		//we are deleting a root
+		if(parent == null) {
+			this.root = delNode.getLeft();
+		}else if(((Comparable<E>)delNode).compareTo(parent.getData()) > 0) { //delnode is the parents right child
+			parent.setRight(delNode.getLeft());
+		}else {
+			parent.setLeft(delNode.getLeft()); //delNode is the parents left child
+		}
+		
+	}
+	
+	//del node has only one child right
+	private void deleteNodeOnlyRightChild(Node<E> delNode, Node<E> parent) {
+		//we are deleting a root
+		if(parent == null) {
+			this.root = delNode.getRight();
+		}else if(((Comparable<E>)delNode).compareTo(parent.getData()) > 0) { //delnode is the parents right child
+			parent.setRight(delNode.getRight());
+		}else {
+			parent.setLeft(delNode.getRight()); //delNode is the parents left child
+		}
+	}
+	
+	//deleting a node with two children
+	private void deleteNodeWithTwoChildren(Node<E> delNode, Node<E> parent) {
+		//get the min val node in the right subtree of delNode
+		Node<E> newDelNode = this.minValNode(delNode.getRight());
+		E newVal = newDelNode.getData();
+		//delete this maxValNode
+		this.delete(newDelNode.getData());
+		//transfer over val
+		delNode.setData(newVal);
+		
+	}
 	//find a node with E obj as its data in the given tree
 	private Node<E> findNode(Node<E> current, E obj){
 		if(current != null) {
