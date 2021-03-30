@@ -249,5 +249,5 @@ public class BST<E> {
 		return current.getLeft() != null && current.getRight() != null;
 	}
 	
-	
+
 }
