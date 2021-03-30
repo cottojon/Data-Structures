@@ -106,11 +106,10 @@ public class BST<E> {
 		else // obj <= current.data move left
 			return contains(current.getLeft(), obj);
 	}
-	
-	
-	
+
+
 	//return the deleted node
-	private Node<E> delete(E obj) {
+	public Node<E> delete(E obj) {
 		
 		//find the node we want to deleted
 		Node<E> delNode = findNode(this.root, obj);
@@ -125,12 +124,8 @@ public class BST<E> {
 			deleteNodeOnlyRightChild(delNode, parentNode);
 
 		}else if(hasTwoChildren(delNode)) { //case 3: has two children
-			
+			deleteNodeWithTwoChildren(delNode, parentNode);
 		}
-		
-		
-		
-		
 		return delNode;
 	}
 
@@ -199,7 +194,7 @@ public class BST<E> {
 		return null; //node not found
 	}
 	
-	//find the parent node of the given node
+	//find the parent node of the given child node
 	private Node<E> findParent(Node<E> current, Node<E> child){
 		//child is root node, no parent
 		if(child == this.root)
@@ -255,5 +250,4 @@ public class BST<E> {
 	}
 	
 	
-
 }
